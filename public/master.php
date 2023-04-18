@@ -51,7 +51,7 @@
           <a href="laporan.php" class="block my-2 text-sm transition duration-300 hover:text-green-500">Laporan</a>
         </div>
         <div class="text-white w-1/2 mx-14 absolute bottom-0 m-5">
-          <button class="border border-white rounded-lg p-2"><a href="./logout.php"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></button>
+          <button class="border border-white rounded-lg p-2 duration-300 hover:bg-green-600"><a href="./logout.php"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></button>
         </div>
       </div>
       <div class="text-center mx-auto w-5/6">
