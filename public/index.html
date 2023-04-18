@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <script src="https://kit.fontawesome.com/faf88445ba.js" crossorigin="anonymous"></script>
+    <style>
+        .sticky {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        }
+
+        .sticky + .content {
+        padding-top: 60px;
+        }
+    </style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <title>MyZakat | Solusi Zakat Digital</title>
+</head>
+<body class="bg-white font-worksans">
+    <div>
+        <a href="#Home">
+          <button id="myBtn" class="hidden text-black text-2xl fixed bottom-5 right-5 rounded-full w-14 h-14 drop-shadow-lg z-50"><i class="animate-bounce fa-solid fa-arrow-up"></i></button>
+        </a>
+    </div>
+      <nav class="flex justify-between space-x-4 bg-zakat1 p-2 z-50" id="Home">
+        <div>
+            <img class="w-28" src="./img/logo.png" alt="">
+        </div>
+        <div class="py-5">
+            <a href="#Prosedur" class="font-medium px-3 py-2 transition duration-300 text-black hover:text-green-500">Prosedur</a>
+            <a href="#Amil" class="font-medium px-3 py-2 transition duration-300 text-black hover:text-green-500">Amil</a>
+            <a href="#Tentang" class="font-medium px-3 py-2 transition duration-300 text-black hover:text-green-500">Tentang</a>
+            <a href="#Contact" class="font-medium px-3 py-2 transition duration-300 text-black hover:text-green-500">Contact</a>
+        </div>
+      </nav>
+      <div class="flex justify-center bg-zakat1 p-10">
+        <div class="p-5 w-2/4">
+            <h1 class="font-bold text-7xl">Bayar <span class="text-green-800">Zakat</span> Hanya di Ujung Jari</h1>
+            <p class="mt-5 text-lg">Bayar zakat, dimana saja dan kapan saja hanya di <span class="font-bold text-green-800">MyZakat</span></p>
+            <p class="text-lg">Ayo login sekarang!</p>
+            <button class="rounded-lg bg-green-800 transition duration-300 hover:bg-green-600 p-3 mt-5 text-white text-base"><a href="login.html">Login!</a></button>
+        </div>
+        <div class="p-5">
+            <img src="./img/index4.png" alt="" class="w-96 h-auto animate-wiggle">
+        </div>
+      </div>
+      <img src="./img/boundary1.png" alt="" class="w-fit">
+      <br><br>
+      <div id="Prosedur" class="flex justify-center p-16 bg-white h-auto">
+        <div class="p-5 w-auto border-r-4 border-green-800">
+            <h2 class="font-bold text-2xl">Prosedur MyZakat</h2>
+            <br>
+            <p class="text-lg">Prosedur di <span class="font-bold text-green-800">MyZakat</span> sangat mudah dan simple!</p>
+        </div>
+        <div class="flex justify-around w-4/5">
+            <div class="bg-zakat1 p-1 rounded-2xl flex w-60 m-3 h-48 animate-float">
+                <div class="m-2">
+                    <button class="bg-green-800 rounded-full py-1 px-3 text-white">1</button>
+                </div>
+                <div class="m-2">
+                    <img src="./img/proc1.png" alt="" class="w-28 mx-auto">
+                    <p class="font-bold text-lg text-center">Daftar ke Admin</p>
+                </div>
+            </div>
+            <div class="bg-zakat1 p-1 rounded-2xl flex m-3 mt-16 w-60 h-48 animate-float">
+                <div class="m-2">
+                    <button class="bg-green-800 rounded-full py-1 px-3 text-white">2</button>
+                </div>
+                <div class="m-2">
+                    <img src="./img/proc2.png" alt="" class="w-28 mx-auto">
+                    <p class="font-bold text-lg text-center">Pendataan Muzakki</p>
+                </div>
+            </div>
+            <div class="bg-zakat1 p-1 rounded-2xl flex m-3 w-60 h-48 animate-float">
+                <div class="m-2">
+                    <button class="bg-green-800 rounded-full py-1 px-3 text-white">3</button>
+                </div>
+                <div class="m-2">
+                    <img src="./img/proc3.png" alt="" class="w-28 mx-auto">
+                    <p class="font-bold text-lg text-center">Selesai</p>
+                </div>
+            </div>
+        </div>
+      </div>
+      <br><br>
+      <div id="Amil" class="mx-auto text-center bg-white">
+        <h1 class="font-bold text-2xl">Amil Zakat di MyZakat</h1>
+        <br>
+        <p class="text-lg">Berikut deretan amil zakat yang ada di MyZakat!</p>
+        <br>
+        <div class="flex justify-center mx-auto animate-float">
+            <div class="bg-zakat1 m-5 rounded-2xl p-5">
+                <img src="./img/amil.png" alt="" class="w-64">
+                <h1 class="font-bold text-2xl">Wawan</h1>
+                <p>Pengurus Masjid</p>
+            </div>
+            <div class="bg-zakat1 m-5 rounded-2xl p-5">
+                <img src="./img/amil.png" alt="" class="w-64">
+                <h1 class="font-bold text-2xl">Wawan</h1>
+                <p>Pengurus Masjid</p>
+            </div>
+            <div class="bg-zakat1 m-5 rounded-2xl p-5">
+                <img src="./img/amil.png" alt="" class="w-64">
+                <h1 class="font-bold text-2xl">Wawan</h1>
+                <p>Pengurus Masjid</p>
+            </div>
+        </div>
+      </div>
+      <br><br>
+      <h2 class="font-bold text-2xl text-center mt-5">Tentang Zakat</h2>
+      <div id="Tentang" class="bg-white">
+        <div class="m-10 flex justify-center p-10">
+            <div class="mx-auto">
+                <img src="./img/kamal.png" alt="" style="width: 2000px;" class="animate-wiggle mx-auto">
+            </div>
+            <div class="p-5 border-l-4 border-green-900">
+                <h2 class="font-bold text-2xl">Tentang Zakat Fitrah</h2>
+                <br>
+                <p>Zakat fitrah merupakan salah satu dari jenis zakat yang wajib dikeluarkan setiap individu merdeka dan mampu serta sesuai dengan syarat yang telah ditetapkan. Zakat sendiri telah menjadi salah satu bagian dari rukun islam yang ke-4. Oleh karena itu, diwajibkan kita sebagai umat muslim untuk selalu membayar zakat terutama zakat fitrah.
+
+                    Pengertian dari zakat fitrah sendiri yaitu zakat yang berguna untuk membersihkan harta dan sebagai pelengkap ibadah puasa kita. Tanpa zakat fitrah, puasa kita tidak terlengkapi.
+                    
+                    <span class="block font-bold my-5">عَنْ ابْنِ عُمَرَ رَضِيَ اللهُ عَنْهُمَا أَنَّ رَسُوْلَ اللهِ صَلَّى الله عليه وسلم قَالَ : أُمِرْتُ أَنْ أُقَاتِلَ النَّاسَ حَتَّى يَشْهَدُوا أَنْ لاَ إِلَهَ إِلاَّ اللهُ وَأَنَّ مُحَمَّداً رَسُوْلُ اللهِ، وَيُقِيْمُوا الصَّلاَةَ وَيُؤْتُوا الزَّكاَةَ، فَإِذَا فَعَلُوا ذَلِكَ عَصَمُوا مِنِّي دِمَاءُهُمْ وَأَمْوَالُـهُمْ إِلاَّ بِحَقِّ الإِسْلاَمِ وَحِسَابُهُمْ عَلَى اللهِ تَعَالىَ</span>
+                    “Dari Ibnu Umar radhiallahuanhuma sesungguhnya Rasulullah Shallallahu’alaihi wasallam bersabda: Aku diperintahkan untuk memerangi manusia hingga mereka bersaksi bahwa tidak ada Ilah selain Allah dan bahwa Muhammad adalah Rasulullah, menegakkan shalat, menunaikan zakat. Jika mereka melakukan hal itu maka darah dan harta mereka akan dilindungi kecuali dengan hak Islam dan perhitungan mereka ada pada Allah Subhanahu wata’ala.” <span class="font-bold block">(HR. Bukhari no. 25; Muslim no. 22)</span></p>
+                    <br>
+            </div>
+        </div>
+      </div>
+      <br><br>
+      <img src="./img/boundary2.png" alt="" class="w-fit">
+      <div id="Contact" class="bg-zakat1 p-5 py-24">
+        <div class="mx-20 flex justify-evenly">
+            <div class="py-10">
+                <img src="./img/logo.png" alt="">
+            </div>
+            <div class="m-3 mx-10 border-l-2 border-green-800 px-7">
+                <h1 class="font-bold text-2xl">Platform</h1>
+                <a href="" class="block">Home</a>
+                <a href="" class="block">Prosedur</a>
+                <a href="" class="block">Amil Zakat</a>
+            </div>
+            <div class="m-3 mx-10 border-l-2 border-green-800 px-7">
+                <h1 class="font-bold text-2xl">Help</h1>
+                <a href="" class="block">Apa itu MyZakat?</a>
+                <a href="" class="block">Bagaimana cara bayar zakat di MyZakat?</a>
+                <a href="" class="block">Apakah MyZakat legal?</a>
+            </div>
+            <div class="m-3 mx-10 border-l-2 border-green-800 px-7">
+                <h1 class="font-bold text-2xl">Contact</h1>
+                <a href="" class="block">+6282443469691</a>
+                <a href="" class="block">Jl.Fuschia No.11, Elvendia Capital, Kekaisaran Elvendia</a>
+                <a href="" class="block">MyZakat Official Office</a>
+            </div>
+        </div>
+      </div>
+      <div class="bg-zakat1">
+        <h1 class="text-center p-5">©Kamilah Insani/217006082 | 2023</h1>
+      </div>
+      <script>
+        let mybutton = document.getElementById("myBtn");
+        
+        window.onscroll = function() {scrollFunction()};
+        
+        function scrollFunction() {
+          if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+          } else {
+            mybutton.style.display = "none";
+          }
+        }
+        
+        function topFunction() {
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+        }
+        </script>
+</body>
+</html>
