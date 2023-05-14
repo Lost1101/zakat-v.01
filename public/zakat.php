@@ -2,72 +2,10 @@
   session_start();
   ob_start();
   include "koneksi.php";
-  include "functions.php";
-
-    $jumlahDataPerHalaman = 10;
-    $jumlahData = count(query("SELECT * FROM mustahik"));
-    $jumlahHalaman = ceil( $jumlahData / $jumlahDataPerHalaman);
-    $halamanAktif = (isset($_GET['halaman'])) ? $_GET['halaman'] : 1;
-    $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
-
-    $sqlamil = mysqli_query($conn, "SELECT * FROM amil WHERE uname = '$_SESSION[uname]'");
-    $amil    =mysqli_fetch_array($sqlamil);
-
-    $bayarzakat = mysqli_query($conn, "SELECT * FROM bayarzakat LIMIT $awalData, $jumlahDataPerHalaman");
-
-  if( isset($_POST['tambah']) ){
-    if(tambahzak($_POST) > 0 ){
-        echo "
-            <script>
-                alert('Data berhasil ditambahkan!');
-                document.location.href = 'zakat.php';
-            </script>
-        ";
-    }else{
-        echo "
-            <script>
-                alert('Data gagal ditambahkan!');
-                document.location.href = 'zakat.php';
-            </script>
-        ";
-        }
-    }
-
-    if( isset($_POST['edit']) ){
-        if(editzak($_POST) > 0 ){
-            echo "
-                <script>
-                    alert('Data berhasil diubah!');
-                    document.location.href = 'zakat.php';
-                </script>
-            ";
-        }else{
-            echo "
-                <script>
-                    alert('Data gagal diubah!');
-                    document.location.href = 'zakat.php';
-                </script>
-            ";
-            }
-        }
-
-    if( isset($_POST['hapus']) ){
-        if(hapuszak($_POST) > 0 ){
-            echo "
-                <script>
-                    alert('Data berhasil dihapus!');
-                    document.location.href = 'zakat.php';
-                </script>
-            ";
-        }else{
-            echo "
-                <script>
-                    alert('Data gagal dihapus!');
-                    document.location.href = 'zakat.php';
-                </script>
-            ";
-            }
-        }
+  $nm_db = 'bayarzakat';
+  include "limit.php";
+  $master = new sql($connection);
+  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -81,6 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
     <title>MyZakat | Solusi Zakat Digital</title>
 </head>
 <body class="font-worksans">
@@ -97,15 +36,23 @@
                                 X<span class="sr-only">Close modal</span>
                             </button>
                         </div>
-                        <form action="" method="post">
+                        <form action="aksi.php?aksi=tambahzakat" method="post">
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
                                     <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Muzakki</label>
-                                    <input type="text" name="nama" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5" placeholder="Tulis nama.." required>
+                                    <select id="nama" name="nama" class="nama bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 " style="width: 100%;">
+                                    <option selected="" value="">-Pilih Nama-</option>
+                                    <?php
+                                        $sqlmuzakki = $master->all_muzakki();
+                                        foreach($sqlmuzakki as $muzakki) :
+                                    ?>
+                                        <option value="<?=$muzakki['nama']?>"><?=$muzakki['nama']?></option>
+                                    <?php endforeach;?>
+                                    </select>
                                 </div>
                                 <div>
-                                    <label for="besar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Besar</label>
-                                    <input type="number" name="besar" id="besar" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5" placeholder="Besar yang dibayar..." required>
+                                    <label for="besar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Tanggungan</label>
+                                    <input type="number" name="jml_tanggungan" id="jml_tanggungan" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5">
                                 </div>
                                 <div>
                                     <div class="flex items-center mb-4">
@@ -125,25 +72,9 @@
             </div>
     </div>
     <div class="flex">
-        <div class="w-1/6 bg-green-950 h-screen">
-            <div>
-            <img src="./img/logo.png" alt="" class="w-24 mx-auto my-6">
-          <img src="./img/<?=$amil['img']?>" alt="" class="rounded-full w-16 bg-green-800 mx-auto">
-          <p class="text-center text-white mt-3 font-bold"><?=$amil['uname']?></p>
-          <p class="text-center text-sm text-white">Amil</p>
-            </div>
-            <div class="text-white p-7">
-            <a href="master.php" class="block my-2 text-sm transition duration-300 hover:text-green-500">Dashboard</a>
-          <a href="muzakki.php" class="block my-2 text-sm transition duration-300 hover:text-green-500">Data Muzakki</a>
-          <a href="mustahik.php" class="block my-2 text-sm transition duration-300 hover:text-green-500">Data Mustahik</a>
-          <a href="zakat.php" class="block my-2 text-sm transition duration-300 hover:text-green-500">Input Zakat</a>
-          <a href="distribusi.php" class="block my-2 text-sm transition duration-300 hover:text-green-500">Distribusi</a>
-          <a href="laporan.php" class="block my-2 text-sm transition duration-300 hover:text-green-500">Laporan</a>
-            </div>
-            <div class="text-white w-1/2 mx-14 absolute bottom-0 m-5">
-              <button class="border border-white rounded-lg p-2 duration-300 hover:bg-green-600"><a href="./logout.php"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></button>
-            </div>
-          </div>
+    <?php
+      include "header.php";
+      ?>
       <div class="mx-auto p-10 w-5/6">
         <h1 class="font-bold text-4xl underline text-center">Input Zakat</h1>
         <div>
@@ -152,23 +83,7 @@
                 <button type="submit" class="border border-black rounded-lg bg-zinc-100 p-2">Cari</button>
             </form>
         </div>
-        <div class="navigasi my-5">
-            <?php if($halamanAktif > 1) : ?>
-                <a href="?halaman=<?= $halamanAktif - 1 ?>" class="nav">&laquo;</a>
-            <?php endif; ?>
-
-            <?php for($i = 1; $i <= $jumlahHalaman; $i++) : ?>
-                <?php if($i == $halamanAktif) : ?>
-                <a href="?halaman=<?= $i?>" class="nav text-green-900 font-bold underline"><?= $i;?></a>
-                <?php else: ?>
-                <a href="?halaman=<?= $i?>" class="nav"><?= $i;?></a>
-                <?php endif; ?>
-            <?php endfor; ?>
-
-            <?php if($halamanAktif < $jumlahHalaman) : ?>
-                    <a href="?halaman=<?= $halamanAktif + 1 ?>" class="nav">&raquo;</a>
-            <?php endif; ?>
-        </div>
+        <?php include "halaman.php";?>
         <div class="mx-auto">
             <div class="relative overflow-x-auto">
                 <table class="w-full text-sm text-left border border-black">
@@ -182,6 +97,9 @@
                                 Nama Kepala Keluarga
                             </th>
                             <th scope="col" class="py-3 text-center">
+                                Tanggungan
+                            </th>
+                            <th scope="col" class="py-3 text-center">
                                 Jenis Bayar
                             </th>
                             <th scope="col" class="py-3 text-center">
@@ -193,7 +111,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <?php $i = 1 ?>
+                    <?php 
+                    $i = 1;
+                    $bayarzakat = $master->bayar();
+                    ?>
                     <?php foreach($bayarzakat as $zakat) : ?>
                         <tr>
                             <th scope="row" class="py-4 font-medium text-black text-center">
@@ -201,6 +122,9 @@
                             </th>
                             <td class="py-4 text-center">
                                 <?=$zakat['nama_kk']?>
+                            </td>
+                            <td class="py-4 text-center">
+                                <?=$zakat['jml_tanggungan']?>
                             </td>
                             <td class="py-4 text-center">
                                 <?php if ($zakat['beras'] == 1){
@@ -230,16 +154,24 @@
                                                         X<span class="sr-only">Close modal</span>
                                                     </button>
                                                 </div>
-                                                <form action="" method="post">
+                                                <form action="aksi.php?aksi=editzakat" method="post">
                                                     <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                                     <input type="text" name="id" value="<?=$zakat['id_zakat']?>" class="hidden">
                                                         <div>
-                                                            <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Muzakki</label>
-                                                            <input type="text" name="nama" value="<?=$zakat['nama_kk']?>" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5" placeholder="Tulis nama.." required>
+                                                            <label for="nama2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Muzakki</label>
+                                                            <select id="nama2" name="nama2" class="nama bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 " style="width: 100%;">
+                                                                <option selected="<?=$zakat['nama_kk']?>" value="<?=$zakat['nama_kk']?>"><?=$zakat['nama_kk']?></option>
+                                                                <?php
+                                                                    $sqlmuzakki = $master->all_muzakki();
+                                                                    foreach($sqlmuzakki as $muzakki) :
+                                                                ?>
+                                                                    <option value="<?=$muzakki['nama']?>"><?=$muzakki['nama']?></option>
+                                                                <?php endforeach;?>
+                                                                </select>
                                                         </div>
                                                         <div>
-                                                            <label for="besar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Besar</label>
-                                                            <input type="number" name="besar" value="<?=$zakat['besar_bayar'];?>" id="besar" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5" placeholder="Besar yang dibayar..." required>
+                                                            <label for="besar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Tanggungan</label>
+                                                            <input type="number" name="jml_tanggungan" value="<?=$zakat['jml_tanggungan'];?>" id="jml_tanggungan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5" placeholder="Besar yang dibayar..." required>
                                                         </div>
                                                         <div>
                                                             <div class="flex items-center mb-4">
@@ -265,7 +197,7 @@
                                             </div>
                                         </div>
                                 </div>
-                                <form action="" method="post">
+                                <form action="aksi.php?aksi=hapuszakat" method="post">
                                     <input type="text" name="id" value="<?=$zakat['id_zakat']?>" class="hidden">
                                     <button type="submit" name="hapus" class="font-medium text-green-600 hover:underline mx-2">Hapus</button>
                                 </form>
@@ -280,6 +212,25 @@
         </div>
       </div>
 
+      <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+      <script type="text/javascript">
+        $(document).ready(function() {
+            $('#nama').select2();
+        });
+        
+        $(".nama").select2({
+        width: 'resolve'
+        });
+
+        $(document).ready(function() {
+            $('#nama2').select2();
+        });
+        
+        $(".nama2").select2({
+        width: 'resolve'
+        });
+        </script>
 </body>
 </html>

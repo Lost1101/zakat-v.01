@@ -18,7 +18,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-		<script>
+		<script type="text/javascript">
 			function generatePDF() {
 			const element = document.getElementById('container_content');
 			var opt = {
@@ -30,19 +30,22 @@
 				};
 				// Choose the element that our invoice is rendered in.
 				html2pdf().set(opt).from(element).save();
+
+                var foo = document.write('<meta http-equiv="refresh" content="0.8;url=./zakat.php">');
 			}
 		</script>
 		</head>
 	<body style="font-family: 'Work Sans', sans-serif;">
     <div class="container_content" id="container_content" >
         <div style="border: 1px black solid; width: 700px; padding: 10px;">
-            <div style="display: flex;">
+            <div style="display: flex; justify-content:space-between;">
                 <img src="./img/logo.png" alt="" style="width: 200px; height: 100px;">
                 <div>
                     <h3 style="font-weight: 700;">Tim MyZakat</h3>
                     <p>Jl.Fuschia No.11, Elvendia Capital</p>
                     <p>Kekaisaran Elvendia</p>
                 </div>
+                <img src="./img/baznas.png" alt="" style="margin:3px; width: 120px; height: 120px;">
             </div>
             <hr>
             <h4 style="font-weight: 700; text-align: center; text-decoration: underline;">Tanda Bukti Pembayaran</h4>
@@ -59,6 +62,9 @@
     <script>
         generatePDF();
     </script>
-    <meta http-equiv="refresh" content="0.2;url=./zakat.php" />
+    <!--<script>
+        generatePDF();
+    </script>
+    <meta http-equiv="refresh" content="0.2;url=./zakat.php" />-->
 </body>
 </html>

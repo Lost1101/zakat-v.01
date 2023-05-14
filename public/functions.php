@@ -1,16 +1,5 @@
 <?php
 
-    function query($query){
-        global $conn;
-    
-        $result = mysqli_query($conn, $query);
-        $rows = [];
-        while($row = mysqli_fetch_assoc($result)){
-            $rows[] = $row;
-        }
-        return $rows;
-    }
-
     function tambahmus($datmus){
         global $conn;
         $nama = htmlspecialchars($datmus['nama']);
@@ -72,11 +61,13 @@
     function tambahzak($datzak){
         global $conn;
         $nama = htmlspecialchars($datzak['nama']);
-        $besar = htmlspecialchars($datzak['besar']);
+        $tanggungan = htmlspecialchars($datzak['jml_tanggungan']);
         if($datzak['jenis'] == 'beras'){
-            mysqli_query($conn, "INSERT INTO bayarzakat VALUES ('','$nama', '$besar', '1', '0')");
+            $besar = $tanggungan * 2.5;
+            mysqli_query($conn, "INSERT INTO bayarzakat VALUES ('','$nama', '$tanggungan', '$besar', '1', '0')");
         }elseif($datzak['jenis'] == 'uang'){
-            mysqli_query($conn, "INSERT INTO bayarzakat VALUES ('','$nama', '$besar', '0', '1')");
+            $besar = $tanggungan * 37500;
+            mysqli_query($conn, "INSERT INTO bayarzakat VALUES ('','$nama', '$tanggungan', '$besar', '0', '1')");
         }
         return mysqli_affected_rows($conn);
     }
@@ -84,13 +75,14 @@
     function editzak($datzak){
         global $conn;
         $id = htmlspecialchars($datzak['id']);
-        $nama = htmlspecialchars($datzak['nama']);
-        $besar = htmlspecialchars($datzak['besar']);
-
+        $nama = htmlspecialchars($datzak['nama2']);
+        $tanggungan = htmlspecialchars($datzak['jml_tanggungan']);
         if($datzak['jenis'] == 'beras'){
-            mysqli_query($conn, "UPDATE bayarzakat SET nama_kk= '$nama', besar_bayar = '$besar', beras = '1', uang = '0' WHERE id_zakat = '$id'");
+            $besar = $tanggungan * 2.5;
+            mysqli_query($conn, "UPDATE bayarzakat SET nama_kk= '$nama', jml_tanggungan= '$tanggungan', besar_bayar = '$besar', beras = '1', uang = '0' WHERE id_zakat = '$id'");
         }elseif($datzak['jenis'] == 'uang'){
-            mysqli_query($conn, "UPDATE bayarzakat SET nama_kk= '$nama', besar_bayar = '$besar', beras = '0', uang = '1' WHERE id_zakat = '$id'");
+            $besar = $tanggungan * 37500;
+            mysqli_query($conn, "UPDATE bayarzakat SET nama_kk= '$nama', jml_tanggungan= '$tanggungan', besar_bayar = '$besar', beras = '0', uang = '1' WHERE id_zakat = '$id'");
         }
 
         return mysqli_affected_rows($conn);
@@ -104,11 +96,22 @@
     }
 
     function tambahdis($datdis){
+        global $connection;
+        $master = new sql($connection);
+        $fetch_beras = $master->besarbayar('beras')->fetch_array();
+        $fetch_uang = $master->besarbayar('uang')->fetch_array();
+        $fetch_mustahik = $master->all_org_mustahik()->fetch_array();
+        $konversi = $fetch_uang['SUM(besar_bayar)'] / 37500 * 2.5;
+        $total = $fetch_beras['SUM(besar_bayar)'] + $konversi;
+        $pembagian = $total / $fetch_mustahik['SUM(jml_tanggungan)'];
+
         global $conn;
         $nama = htmlspecialchars($datdis['nama']);
-        $kategori = htmlspecialchars($datdis['kategori']);
-        $besar = htmlspecialchars($datdis['besar']);
+        $sqlmus = mysqli_query($conn, "SELECT * FROM mustahik WHERE nama = '$nama'");
+        $mustahik    =mysqli_fetch_array($sqlmus);
+        $kategori = htmlspecialchars($mustahik['kategori']);
         $jml_tanggungan = htmlspecialchars($datdis['jml_tanggungan']);
+        $besar = $jml_tanggungan * $pembagian;
         
         mysqli_query($conn, "INSERT INTO distribusi VALUES ('','$nama', '$kategori', '$jml_tanggungan', '$besar', NOW())");
 
@@ -116,12 +119,23 @@
     }
 
     function editdis($datdis){
+        global $connection;
+        $master = new sql($connection);
+        $fetch_beras = $master->besarbayar('beras')->fetch_array();
+        $fetch_uang = $master->besarbayar('uang')->fetch_array();
+        $fetch_mustahik = $master->all_org_mustahik()->fetch_array();
+        $konversi = $fetch_uang['SUM(besar_bayar)'] / 37500 * 2.5;
+        $total = $fetch_beras['SUM(besar_bayar)'] + $konversi;
+        $pembagian = $total / $fetch_mustahik['SUM(jml_tanggungan)'];
+
         global $conn;
         $id = htmlspecialchars($datdis['id']);
         $nama = htmlspecialchars($datdis['nama']);
-        $besar = htmlspecialchars($datdis['besar']);
-        $kategori = htmlspecialchars($datdis['kategori']);
+        $sqlmus = mysqli_query($conn, "SELECT * FROM mustahik WHERE nama = '$nama'");
+        $mustahik    =mysqli_fetch_array($sqlmus);
+        $kategori = htmlspecialchars($mustahik['kategori']);
         $jml_tanggungan = htmlspecialchars($datdis['jml_tanggungan']);
+        $besar = $jml_tanggungan * $pembagian;
 
         mysqli_query($conn, "UPDATE distribusi SET nama= '$nama', kategori = '$kategori', jml_tanggungan = '$jml_tanggungan', besar = '$besar', waktu = NOW()  WHERE id_penerimaan = '$id'");
 

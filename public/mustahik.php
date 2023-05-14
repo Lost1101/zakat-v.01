@@ -2,80 +2,9 @@
   session_start();
   ob_start();
   include "koneksi.php";
-  include "functions.php";
-
-    $jumlahDataPerHalaman = 10;
-    $jumlahData = count(query("SELECT * FROM mustahik"));
-    $jumlahHalaman = ceil( $jumlahData / $jumlahDataPerHalaman);
-    $halamanAktif = (isset($_GET['halaman'])) ? $_GET['halaman'] : 1;
-    $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
-
-  $sqlamil = mysqli_query($conn, "SELECT * FROM amil WHERE uname = '$_SESSION[uname]'");
-  $amil    =mysqli_fetch_array($sqlamil);
-
-  $sqlmustahik = query("SELECT * FROM mustahik LIMIT $awalData, $jumlahDataPerHalaman");
-
-if( isset($_POST['tambah']) ){
-
-
-    if(tambahmus($_POST) > 0 ){
-        echo "
-            <script>
-                alert('Data berhasil ditambahkan!');
-                document.location.href = 'mustahik.php';
-            </script>
-        ";
-    }else{
-        echo "
-            <script>
-                alert('Data gagal ditambahkan!');
-                document.location.href = 'mustahik.php';
-            </script>
-        ";
-    }
-  }
-
-if( isset($_POST['edit']) ){
-
-
-        if(editmus($_POST) > 0 ){
-            echo "
-                <script>
-                    alert('Data berhasil diubah!');
-                    document.location.href = 'mustahik.php';
-                </script>
-            ";
-        }else{
-            echo "
-                <script>
-                    alert('Data gagal diubah!');
-                    document.location.href = 'mustahik.php';
-                </script>
-            ";
-        }
-    }
-
-    if( isset($_POST['hapus']) ){
-
-
-        if(hapusmus($_POST) > 0 ){
-            echo "
-                <script>
-                    alert('Data berhasil dihapus!');
-                    document.location.href = 'mustahik.php';
-                </script>
-            ";
-        }else{
-            echo "
-                <script>
-                    alert('Data gagal dihapus!');
-                    document.location.href = 'mustahik.php';
-                </script>
-            ";
-        }
-    }
-
-
+  $nm_db = 'mustahik';
+  include "limit.php";
+  $master = new sql($connection);
 
 ?>
 <!DOCTYPE html>
@@ -107,7 +36,7 @@ if( isset($_POST['edit']) ){
                                 X<span class="sr-only">Close modal</span>
                             </button>
                         </div>
-                        <form action="" method="post">
+                        <form action="aksi.php?aksi=tambahmus" method="post">
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
                                     <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Mustahik</label>
@@ -138,25 +67,9 @@ if( isset($_POST['edit']) ){
             </div>
 
     <div class="flex">
-        <div class="w-1/6 bg-green-950 h-screen">
-            <div>
-            <img src="./img/logo.png" alt="" class="w-24 mx-auto my-6">
-          <img src="./img/<?=$amil['img']?>" alt="" class="rounded-full w-16 bg-green-800 mx-auto">
-          <p class="text-center text-white mt-3 font-bold"><?=$amil['uname']?></p>
-          <p class="text-center text-sm text-white">Amil</p>
-            </div>
-            <div class="text-white p-7">
-            <a href="master.php" class="block my-2 text-sm transition duration-300 hover:text-green-500">Dashboard</a>
-          <a href="muzakki.php" class="block my-2 text-sm transition duration-300 hover:text-green-500">Data Muzakki</a>
-          <a href="mustahik.php" class="block my-2 text-sm transition duration-300 hover:text-green-500">Data Mustahik</a>
-          <a href="zakat.php" class="block my-2 text-sm transition duration-300 hover:text-green-500">Input Zakat</a>
-          <a href="distribusi.php" class="block my-2 text-sm transition duration-300 hover:text-green-500">Distribusi</a>
-          <a href="laporan.php" class="block my-2 text-sm transition duration-300 hover:text-green-500">Laporan</a>
-            </div>
-            <div class="text-white w-1/2 mx-14 absolute bottom-0 m-5">
-              <button class="border border-white rounded-lg p-2 duration-300 hover:bg-green-600"><a href="./logout.php"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></button>
-            </div>
-          </div>
+    <?php
+      include "header.php";
+      ?>
       <div class="mx-auto p-10 w-5/6">
         <h1 class="font-bold text-4xl underline text-center">Master Data Mustahik</h1>
         <div>
@@ -166,23 +79,7 @@ if( isset($_POST['edit']) ){
             </form>
         </div>
 
-        <div class="navigasi my-5">
-            <?php if($halamanAktif > 1) : ?>
-                <a href="?halaman=<?= $halamanAktif - 1 ?>" class="nav">&laquo;</a>
-            <?php endif; ?>
-
-            <?php for($i = 1; $i <= $jumlahHalaman; $i++) : ?>
-                <?php if($i == $halamanAktif) : ?>
-                <a href="?halaman=<?= $i?>" class="nav text-green-900 font-bold underline"><?= $i;?></a>
-                <?php else: ?>
-                <a href="?halaman=<?= $i?>" class="nav"><?= $i;?></a>
-                <?php endif; ?>
-            <?php endfor; ?>
-
-            <?php if($halamanAktif < $jumlahHalaman) : ?>
-                    <a href="?halaman=<?= $halamanAktif + 1 ?>" class="nav">&raquo;</a>
-            <?php endif; ?>
-        </div>
+        <?php include "halaman.php";?>
 
         <div class="mx-auto">
             <div class="relative overflow-x-auto">
@@ -208,7 +105,9 @@ if( isset($_POST['edit']) ){
                         </tr>
                     </thead>
                     <tbody>
-                    <?php $i = 1 ?>
+                    <?php $i = 1;
+                    $sqlmustahik = $master->data_mustahik();
+                    ?>
                     <?php foreach($sqlmustahik as $mustahik) : ?>
                         <tr>
                             <th scope="row" class="py-4 font-medium text-black text-center">
@@ -236,7 +135,7 @@ if( isset($_POST['edit']) ){
                                                     X<span class="sr-only">Close modal</span>
                                                 </button>
                                             </div>
-                                            <form action="" method="post">
+                                            <form action="aksi.php?aksi=editmus" method="post">
                                                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                                     <input type="text" name="id" value="<?=$mustahik['id_mustahik']?>" class="hidden">
                                                     <div>
@@ -254,7 +153,7 @@ if( isset($_POST['edit']) ){
                                                             <option value="Fakir">Fakir</option>
                                                             <option value="Miskin">Miskin</option>
                                                             <option value="Amil">Amil</option>
-                                                            <option value="Mu'allaf">Mu'allaf</option>
+                                                            <option value="Muallaf">Mu'allaf</option>
                                                             <option value="Riqab">Riqab</option>
                                                             <option value="Gharim">Gharim</option>
                                                             <option value="Fi Sabilillah">Fi Sabilillah</option>
@@ -267,7 +166,7 @@ if( isset($_POST['edit']) ){
                                         </div>
                                     </div>
                                 </div>
-                                <form action="" method="post">
+                                <form action="aksi.php?aksi=hapusmus" method="post">
                                     <input type="text" name="id" value="<?=$mustahik['id_mustahik']?>" class="hidden">
                                     <button type="submit" name="hapus" class="font-medium text-green-600 hover:underline mx-2">Hapus</button>
                                 </form>
