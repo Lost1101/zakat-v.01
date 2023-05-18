@@ -51,11 +51,14 @@ DROP TABLE IF EXISTS `bayarzakat`;
 CREATE TABLE `bayarzakat` (
   `id_zakat` int(4) NOT NULL AUTO_INCREMENT,
   `nama_kk` varchar(50) NOT NULL,
+  `jml_tanggungan` int(2) NOT NULL,
   `besar_bayar` int(10) NOT NULL,
   `beras` tinyint(1) DEFAULT NULL,
   `uang` tinyint(1) DEFAULT NULL,
+  `no_kk` varchar(16) NOT NULL,
+  `waktu` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id_zakat`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +67,7 @@ CREATE TABLE `bayarzakat` (
 
 LOCK TABLES `bayarzakat` WRITE;
 /*!40000 ALTER TABLE `bayarzakat` DISABLE KEYS */;
-INSERT INTO `bayarzakat` VALUES (1,'Wawan WanwanWan',7,1,0),(2,'Tri TritriTri',5,1,0),(3,'For ForforFor',112500,0,1),(5,'awikwok',37500,0,1);
+INSERT INTO `bayarzakat` VALUES (3,'Wawawaaa',2,75000,0,1,'1','2023-05-18 00:09:53'),(4,'Faiv FaivfaivFaiv',5,13,1,0,'2','2023-05-18 00:10:08');
 /*!40000 ALTER TABLE `bayarzakat` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,9 +84,10 @@ CREATE TABLE `distribusi` (
   `kategori` varchar(20) NOT NULL,
   `jml_tanggungan` int(2) NOT NULL,
   `besar` float NOT NULL,
+  `no_kk` varchar(16) NOT NULL,
   `waktu` datetime NOT NULL,
   PRIMARY KEY (`id_penerimaan`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +96,7 @@ CREATE TABLE `distribusi` (
 
 LOCK TABLES `distribusi` WRITE;
 /*!40000 ALTER TABLE `distribusi` DISABLE KEYS */;
-INSERT INTO `distribusi` VALUES (2,'Tu tutuTu','Fakir',2,5,'2023-04-16 18:24:16'),(4,'Sik SiksikSik','Muallaf',4,10,'2023-04-16 18:24:24');
+INSERT INTO `distribusi` VALUES (5,'Ateng','Gharim',6,8.30769,'2','2023-05-18 07:20:59'),(6,'Sik SiksikSik','Miskin',7,9.69231,'3','2023-05-18 07:21:14');
 /*!40000 ALTER TABLE `distribusi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,12 +108,13 @@ DROP TABLE IF EXISTS `mustahik`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mustahik` (
-  `id_mustahik` int(4) NOT NULL AUTO_INCREMENT,
+  `no_kk` varchar(16) NOT NULL,
   `nama` varchar(50) NOT NULL,
   `kategori` varchar(20) NOT NULL,
   `jml_tanggungan` int(2) NOT NULL,
-  PRIMARY KEY (`id_mustahik`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`no_kk`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -118,7 +123,7 @@ CREATE TABLE `mustahik` (
 
 LOCK TABLES `mustahik` WRITE;
 /*!40000 ALTER TABLE `mustahik` DISABLE KEYS */;
-INSERT INTO `mustahik` VALUES (1,'Tu tutuTu','Fakir',2),(5,'Ateng','Gharim',6),(6,'Sik SiksikSik','Miskin',7);
+INSERT INTO `mustahik` VALUES ('2','Ateng','Gharim',6,1),('3','Sik SiksikSik','Miskin',7,1);
 /*!40000 ALTER TABLE `mustahik` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,13 +135,14 @@ DROP TABLE IF EXISTS `muzakki`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `muzakki` (
-  `id_muzakki` int(4) NOT NULL AUTO_INCREMENT,
+  `no_kk` varchar(16) NOT NULL,
   `nama` varchar(50) NOT NULL,
   `jml_tanggungan` int(2) NOT NULL,
   `beras` int(10) NOT NULL,
   `uang` int(10) NOT NULL,
-  PRIMARY KEY (`id_muzakki`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`no_kk`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,7 +151,7 @@ CREATE TABLE `muzakki` (
 
 LOCK TABLES `muzakki` WRITE;
 /*!40000 ALTER TABLE `muzakki` DISABLE KEYS */;
-INSERT INTO `muzakki` VALUES (1,'Wawan WanwanWan',2,5,75000),(2,'Faiv FaivfaivFaiv',5,13,187500);
+INSERT INTO `muzakki` VALUES ('1','Wawawaaa',2,5,75000,1),('2','Faiv FaivfaivFaiv',5,13,187500,1);
 /*!40000 ALTER TABLE `muzakki` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -158,4 +164,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-18 10:11:01
+-- Dump completed on 2023-05-18  7:31:14
