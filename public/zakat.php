@@ -5,6 +5,11 @@
   $nm_db = 'bayarzakat';
   include "limit.php";
   $master = new sql($connection);
+
+  $bayarzakat = $master->bayar();
+  if(isset($_POST['search'])){
+    $bayarzakat = search($_POST['keyword']);
+}
   
 ?>
 <!DOCTYPE html>
@@ -46,7 +51,7 @@
                                         $sqlmuzakki = $master->all_muzakki();
                                         foreach($sqlmuzakki as $muzakki) :
                                     ?>
-                                        <option value="<?=$muzakki['nama']?>"><?=$muzakki['nama']?></option>
+                                        <option value="<?=$muzakki['nama']?>"><?=$muzakki['nama']?> (<?=$muzakki['jml_tanggungan']?>)</option>
                                     <?php endforeach;?>
                                     </select>
                                 </div>
@@ -64,6 +69,9 @@
                                         <label for="default-radio-2" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Beras</label> 
                                     </div>
                                 </div>
+                                <div>
+                                    <h4>Total dibayar : <span class="font-bold" id="calculation"></span></h4>
+                                </div>
                             </div>
                             <button type="submit" name="tambah" class="text-black text-center border border-black rounded-lg p-2">Tambah</button>
                         </form>
@@ -78,9 +86,9 @@
       <div class="mx-auto p-10 w-5/6">
         <h1 class="font-bold text-4xl underline text-center">Input Zakat</h1>
         <div>
-            <form action="">
-                <input type="text" placeholder="Cari..." name="cari" class="my-5 border border-black rounded-lg p-2">
-                <button type="submit" class="border border-black rounded-lg bg-zinc-100 p-2">Cari</button>
+            <form action="" method="post">
+                <input type="text" placeholder="Cari..." name="keyword" class="my-5 border border-black rounded-lg p-2">
+                <button type="submit" name="search" class="border border-black rounded-lg bg-zinc-100 p-2">Cari</button>
             </form>
         </div>
         <?php include "halaman.php";?>
@@ -91,7 +99,7 @@
                     <thead class="text-xs border border-black">
                         <tr>
                             <th scope="col" class="py-3 text-center">
-                                ID
+                                ID Bayar
                             </th>
                             <th scope="col" class="py-3 text-center">
                                 Nama Kepala Keluarga
@@ -113,7 +121,6 @@
                     <tbody>
                     <?php 
                     $i = 1;
-                    $bayarzakat = $master->bayar();
                     ?>
                     <?php foreach($bayarzakat as $zakat) : ?>
                         <tr>
@@ -156,6 +163,7 @@
                                                 </div>
                                                 <form action="aksi.php?aksi=editzakat" method="post">
                                                     <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                                                    <input type="text" name="before" value="<?=$zakat['nama_kk']?>" class="hidden">
                                                     <input type="text" name="id" value="<?=$zakat['id_zakat']?>" class="hidden">
                                                         <div>
                                                             <label for="nama2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Muzakki</label>
@@ -165,13 +173,13 @@
                                                                     $sqlmuzakki = $master->all_muzakki();
                                                                     foreach($sqlmuzakki as $muzakki) :
                                                                 ?>
-                                                                    <option value="<?=$muzakki['nama']?>"><?=$muzakki['nama']?></option>
+                                                                    <option value="<?=$muzakki['nama']?>"><?=$muzakki['nama']?> (<?=$muzakki['jml_tanggungan']?>)</option>
                                                                 <?php endforeach;?>
                                                                 </select>
                                                         </div>
                                                         <div>
                                                             <label for="besar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Tanggungan</label>
-                                                            <input type="number" name="jml_tanggungan" value="<?=$zakat['jml_tanggungan'];?>" id="jml_tanggungan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5" placeholder="Besar yang dibayar..." required>
+                                                            <input type="number" name="jml_tanggungan2" value="<?=$zakat['jml_tanggungan'];?>" id="jml_tanggungan2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5" placeholder="Besar yang dibayar..." required>
                                                         </div>
                                                         <div>
                                                             <div class="flex items-center mb-4">
@@ -179,7 +187,7 @@
                                                                     echo "checked";
                                                                 }else{
                                                                     echo "";
-                                                                }?> id="uang" type="radio" value="uang" name="jenis" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600">
+                                                                }?> id="uang" type="radio" value="uang" name="jenis2" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600">
                                                                 <label for="default-radio-1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Uang</label>
                                                             </div>
                                                             <div class="flex items-center">
@@ -187,9 +195,12 @@
                                                                     echo "checked";
                                                                 }else{
                                                                     echo "";
-                                                                }?> id="beras" type="radio" value="beras" name="jenis" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500">
+                                                                }?> id="beras" type="radio" value="beras" name="jenis2" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500">
                                                                 <label for="default-radio-2" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Beras</label> 
                                                             </div>
+                                                        </div>
+                                                        <div>
+                                                            <h4>Total dibayar : <span class="font-bold" id="calculation2"></span></h4>
                                                         </div>
                                                     </div>
                                                     <button type="submit" name="edit" class="text-black text-center border border-black rounded-lg p-2">Edit</button>
@@ -231,6 +242,75 @@
         $(".nama2").select2({
         width: 'resolve'
         });
+
+        function calculate_cost() {
+        let count = parseInt(document.getElementById('jml_tanggungan').value);
+        if (count > 0) {
+            let size = 0;
+            let cost = 0;
+            for (var i = 0 ; i < document.getElementsByName('jenis').length; i++) {
+                if (document.getElementsByName('jenis')[i].checked) {
+                        size = 37500;
+                        cost = count * size;
+                        document.getElementById('calculation').innerHTML = 'Rp. '+cost;
+                        break;
+                }else if(document.getElementsByName('jenis')[i+1].checked){
+                    size = 2.5;
+                    cost = count * size;
+                    document.getElementById('calculation').innerHTML = cost+' Kg';
+                    break;
+                }
+            }
+        }
+    }
+
+    for (var i = 0 ; i < document.getElementsByName('jenis').length; i++) {
+    document.getElementsByName('jenis')[i].onclick = function() { 
+        calculate_cost(); 
+    }
+    }
+    document.getElementById('jml_tanggungan2').onchange = function() { 
+        calculate_cost(); 
+    }
+
+    function calculate_cost2() {
+        let count = parseInt(document.getElementById('jml_tanggungan2').value);
+        if (count > 0) {
+            let size = 0;
+            let cost = 0;
+            for (var i = 0 ; i < document.getElementsByName('jenis2').length; i++) {
+                if (document.getElementsByName('jenis2')[i].checked) {
+                        size = 37500;
+                        cost = count * size;
+                        document.getElementById('calculation2').innerHTML = 'Rp. '+cost;
+                        break;
+                }else if(document.getElementsByName('jenis2')[i+1].checked){
+                    size = 2.5;
+                    cost = count * size;
+                    document.getElementById('calculation2').innerHTML = cost+' Kg';
+                    break;
+                }
+            }
+        }
+    }
+
+    for (var i = 0 ; i < document.getElementsByName('jenis2').length; i++) {
+    document.getElementsByName('jenis2')[i].onclick = function() { 
+        calculate_cost2(); 
+    }
+    }
+    document.getElementById('jml_tanggungan2').onchange = function() { 
+        calculate_cost2(); 
+    }
         </script>
 </body>
 </html>
+
+<?php 
+    function search($keyword){
+        global $conn;
+
+        $query = "SELECT * FROM bayarzakat WHERE nama_kk LIKE '%$keyword%'";
+        return mysqli_query($conn, $query);
+    }
+?>

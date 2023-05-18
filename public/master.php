@@ -65,7 +65,7 @@
                 </div>
                 <div>
                   <h1 class="font-bold text-lg border border-black p-3">Sisa Beras</h1>
-                  <h2 class="font-bold text-2xl border border-black p-5"><?=$sisa?></h2>
+                  <h2 class="font-bold text-2xl border border-black p-5"><?=number_format((float)$sisa, 2, '.', '')?></h2>
                   <p class="border border-black">Kg</p>
                 </div>
               </div>

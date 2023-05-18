@@ -6,6 +6,12 @@
   include "limit.php";
   $master = new sql($connection);
 
+  $sqlmustahik = $master->data_mustahik();
+
+  if(isset($_POST['search'])){
+    $sqlmustahik = search($_POST['keyword']);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,16 +43,20 @@
                             </button>
                         </div>
                         <form action="aksi.php?aksi=tambahmus" method="post">
-                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                            <div class="gap-4 mb-4 sm:grid-cols-2">
                                 <div>
+                                    <label for="no_kk">No. KK</label>
+                                    <input type="text" name="no_kk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Nomor Keluarga..." required>
+                                </div>
+                                <div class="mt-5">
                                     <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Mustahik</label>
                                     <input type="text" name="nama" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5" placeholder="Tulis nama.." required>
                                 </div>
-                                <div>
+                                <div class="mt-5">
                                     <label for="jml_tanggungan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Tanggungan</label>
                                     <input type="number" name="jml_tanggungan" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 " placeholder="Masukkan jumlah tanggungan..." required>
                                 </div>
-                                <div>
+                                <div class="mt-5">
                                     <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategori Mustahik</label>
                                     <select id="kategori" name="kategori" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 ">
                                         <option selected="" value="Fakir">Fakir</option>
@@ -73,9 +83,9 @@
       <div class="mx-auto p-10 w-5/6">
         <h1 class="font-bold text-4xl underline text-center">Master Data Mustahik</h1>
         <div>
-            <form action="">
-                <input type="text" placeholder="Cari..." name="cari" class="my-5 border border-black rounded-lg p-2">
-                <button type="submit" class="border border-black rounded-lg bg-zinc-100 p-2">Cari</button>
+            <form action="" method="post">
+                <input type="text" placeholder="Cari nama..." name="keyword" class="my-5 border border-black rounded-lg p-2" autocomplete="off">
+                <button type="submit" name="search" class="border border-black rounded-lg bg-zinc-100 p-2">Cari</button>
             </form>
         </div>
 
@@ -88,7 +98,7 @@
                     <thead class="text-xs border border-black">
                         <tr>
                             <th scope="col" class="py-3 text-center">
-                                ID
+                                No. KK
                             </th>
                             <th scope="col" class="py-3 text-center">
                                 Nama Kepala Keluarga
@@ -100,18 +110,20 @@
                                 Kategori
                             </th>
                             <th scope="col" class="py-3 text-center">
+                                Status Menerima
+                            </th>
+                            <th scope="col" class="py-3 text-center">
                                 Aksi
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                     <?php $i = 1;
-                    $sqlmustahik = $master->data_mustahik();
                     ?>
                     <?php foreach($sqlmustahik as $mustahik) : ?>
                         <tr>
                             <th scope="row" class="py-4 font-medium text-black text-center">
-                                <?=$mustahik['id_mustahik']?>
+                                <?=$mustahik['no_kk']?>
                             </th>
                             <td class="py-4 text-center">
                                 <?=$mustahik['nama']?>
@@ -122,9 +134,18 @@
                             <td class="py-4 text-center">
                                 <?=$mustahik['kategori']?>
                             </td>
+                            <td class="py-4 text-center">
+                                <?php
+                                if ($mustahik['status'] == 0){
+                                    echo "<i class='fa-solid fa-x' style='color: red;'></i>";
+                                } else {
+                                    echo "<i class='fa-solid fa-check' style='color: green;'></i>";
+                                }
+                                ?>
+                            </td>
                             <td class="py-4 flex justify-center text-center">
                                 <button id="defaultModalButton" data-modal-toggle="edit<?=$i?>" class="font-medium text-green-600 hover:underline mx-2">Edit</button>
-                                <div id="edit<?=$i?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
+                                <div id="edit<?=$i?>" tabindex="-1" aria-hidden="true" class="justify-start text-left hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
                                     <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
                                         <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                                             <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
@@ -136,17 +157,18 @@
                                                 </button>
                                             </div>
                                             <form action="aksi.php?aksi=editmus" method="post">
-                                                <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                                                    <input type="text" name="id" value="<?=$mustahik['id_mustahik']?>" class="hidden">
-                                                    <div>
+                                                <div class="gap-4 mb-4 sm:grid-cols-2">
+                                                    <label for="no_kk">No. KK</label>
+                                                    <input type="text" name="no_kk" value="<?=$mustahik['no_kk']?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Nomor Keluarga..." required style="pointer-events:none;">
+                                                    <div class="mt-5">
                                                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Mustahik</label>
                                                         <input type="text" value="<?=$mustahik['nama']?>" name="nama" id="nama" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Tulis nama.." required>
                                                     </div>
-                                                    <div>
+                                                    <div class="mt-5">
                                                         <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Tanggungan</label>
                                                         <input type="number" name="jml_tanggungan" value="<?=$mustahik['jml_tanggungan']?>" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Masukkan jumlah tanggungan..." required>
                                                     </div>
-                                                    <div>
+                                                    <div class="mt-5">
                                                         <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategori Mustahik</label>
                                                         <select name="kategori" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500">
                                                             <option selected="<?=$mustahik['kategori']?>" value="<?=$mustahik['kategori']?>"><?=$mustahik['kategori']?></option>
@@ -167,8 +189,8 @@
                                     </div>
                                 </div>
                                 <form action="aksi.php?aksi=hapusmus" method="post">
-                                    <input type="text" name="id" value="<?=$mustahik['id_mustahik']?>" class="hidden">
-                                    <button type="submit" name="hapus" class="font-medium text-green-600 hover:underline mx-2">Hapus</button>
+                                    <input type="text" name="no_kk" value="<?=$mustahik['no_kk']?>" class="hidden">
+                                    <button type="submit" name="hapus" class="font-medium hover:underline mx-2" style="color: red;">Hapus</button>
                                 </form>
                             </td>
                         </tr>
@@ -188,3 +210,12 @@
       </script>
 </body>
 </html>
+
+<?php 
+    function search($keyword){
+        global $conn;
+
+        $query = "SELECT * FROM mustahik WHERE nama LIKE '%$keyword%'";
+        return mysqli_query($conn, $query);
+    }
+?>

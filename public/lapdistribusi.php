@@ -69,16 +69,16 @@
                     $total = $fetch_beras['SUM(besar_bayar)'] + $konversi;
                     $pembagian = $total / $fetch_mustahik['SUM(jml_tanggungan)'];
                 ?>
-                <p style="font-size: 13px;">Zakat dibagikan secara merata dengan jenis beras, sehingga pendistribusian seperti berikut : <span style="font-weight: 700; display: inline-block;">1 Mustahik = <?=$pembagian?> kg</span></p>
-                    <p style="font-size: 12px;">Fakir : <?=$master->det_distribusi('Fakir') * $pembagian?> Kg</p>
-                    <p style="font-size: 12px;">Miskin : <?=$master->det_distribusi('Miskin') * $pembagian?> Kg</p>
-                    <p style="font-size: 12px;">Amil : <?=$master->det_distribusi('Amil') * $pembagian?> Kg</p>
-                    <p style="font-size: 12px;">Muallaf : <?=$master->det_distribusi('Muallaf') * $pembagian?> Kg</p>
-                    <p style="font-size: 12px;">Riqab : <?=$master->det_distribusi('Riqab') * $pembagian?> Kg</p>
-                    <p style="font-size: 12px;">Gharim : <?=$master->det_distribusi('Gharim') * $pembagian?> Kg</p>
-                    <p style="font-size: 12px;">Fi Sabilillah : <?=$master->det_distribusi('Fi Sabilillah') * $pembagian?> Kg</p>
-                    <p style="font-size: 12px;">Ibnu Sabil : <?=$master->det_distribusi('Ibnu Sabil') * $pembagian?> Kg</p>
-                    <p style="font-size: 12px; font-weight: 700;">Total : <?=$pembagian * $fetch_orang['SUM(jml_tanggungan)']?> Kg</p>
+                <p style="font-size: 13px;">Zakat dibagikan secara merata dengan jenis beras, sehingga pendistribusian seperti berikut : <span style="font-weight: 700; display: inline-block;">1 Mustahik = <?=number_format((float)$pembagian, 2, '.', '')?> kg</span></p>
+                    <p style="font-size: 12px;">Fakir : <?=number_format((float)$master->det_distribusi('Fakir') * $pembagian, 2, '.', '')?> Kg</p>
+                    <p style="font-size: 12px;">Miskin : <?=number_format((float)$master->det_distribusi('Miskin') * $pembagian, 2, '.', '')?> Kg</p>
+                    <p style="font-size: 12px;">Amil : <?=number_format((float)$master->det_distribusi('Amil') * $pembagian, 2, '.', '')?> Kg</p>
+                    <p style="font-size: 12px;">Muallaf : <?=number_format((float)$master->det_distribusi('Muallaf') * $pembagian, 2, '.', '')?> Kg</p>
+                    <p style="font-size: 12px;">Riqab : <?=number_format((float)$master->det_distribusi('Riqab') * $pembagian, 2, '.', '')?> Kg</p>
+                    <p style="font-size: 12px;">Gharim : <?=number_format((float)$master->det_distribusi('Gharim') * $pembagian, 2, '.', '')?> Kg</p>
+                    <p style="font-size: 12px;">Fi Sabilillah : <?=number_format((float)$master->det_distribusi('Fi Sabilillah') * $pembagian, 2, '.', '')?> Kg</p>
+                    <p style="font-size: 12px;">Ibnu Sabil : <?=number_format((float)$master->det_distribusi('Ibnu Sabil') * $pembagian, 2, '.', '')?> Kg</p>
+                    <p style="font-size: 12px; font-weight: 700;">Total : <?=number_format((float)$pembagian, 2, '.', '') * $fetch_orang['SUM(jml_tanggungan)']?> Kg</p>
             </div>
             <div style="text-align: right; margin-right: 70px;">
                 <p style="font-weight: 700; font-size: 16px;"><?=$today?></p>

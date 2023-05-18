@@ -6,6 +6,11 @@
   include "limit.php";
   $master = new sql($connection);
 
+  $sqlmuzakki = $master->data_muzakki();
+  if(isset($_POST['search'])){
+    $sqlmuzakki = search($_POST['keyword']);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +24,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/4ef2c70460.js" cross origin="anonymous"></script>
     <title>MyZakat | Solusi Zakat Digital</title>
 </head>
 <body class="font-worksans">
@@ -37,17 +43,21 @@
                             </button>
                         </div>
                         <form action="aksi.php?aksi=tambahmuz" method="post">
-                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                            <div class="gap-4 mb-4 sm:grid-cols-2">
                                 <div>
-                                    <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Muzakki</label>
-                                    <input type="text" name="nama" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Tulis nama.." required>
+                                    <label for="no_kk">No. KK</label>
+                                    <input type="text" name="no_kk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Nomor Keluarga..." required>
                                 </div>
-                                <div>
+                                <div class="mt-5">
+                                    <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Muzakki</label>
+                                    <input type="text" name="nama" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Tulis nama..." required>
+                                </div>
+                                <div class="mt-5">
                                     <label for="jml_tanggungan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Tanggungan</label>
                                     <input type="number" name="jml_tanggungan" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Masukkan jumlah tanggungan..." required>
                                 </div>
                             </div>
-                            <button type="submit" name="tambah" class="text-black text-center border border-black rounded-lg p-2">Edit</button>
+                            <button type="submit" name="tambah" class="text-black text-center border border-black rounded-lg p-2">Tambah</button>
                         </form>
                     </div>
                 </div>
@@ -60,9 +70,9 @@
       <div class="mx-auto p-10 w-5/6">
         <h1 class="font-bold text-4xl underline text-center">Master Data Muzakki</h1>
         <div>
-            <form action="">
-                <input type="text" placeholder="Cari..." name="cari" class="my-5 border border-black rounded-lg p-2">
-                <button type="submit" class="border border-black rounded-lg bg-zinc-100 p-2">Cari</button>
+            <form action="" method="post">
+                <input type="text" placeholder="Cari..." name="keyword" class="my-5 border border-black rounded-lg p-2">
+                <button type="submit" name="search" class="border border-black rounded-lg bg-zinc-100 p-2">Cari</button>
             </form>
         </div>
 
@@ -75,7 +85,7 @@
                     <thead class="text-xs border border-black">
                         <tr>
                             <th scope="col" class="py-3 text-center">
-                                ID
+                                No.KK
                             </th>
                             <th scope="col" class="py-3 text-center">
                                 Nama Kepala Keluarga
@@ -84,18 +94,20 @@
                                 Jumlah Tanggungan
                             </th>
                             <th scope="col" class="py-3 text-center">
+                                Status Bayar
+                            </th>
+                            <th scope="col" class="py-3 text-center">
                                 Aksi
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                     <?php $i = 1;
-                    $sqlmuzakki = $master->data_muzakki();
                     ?>
                     <?php foreach($sqlmuzakki as $muzakki) : ?>
                         <tr>
                             <th scope="row" class="py-4 font-medium text-black text-center">
-                                <?=$muzakki['id_muzakki']?>
+                                <?=$muzakki['no_kk']?>
                             </th>
                             <td class="py-4 text-center">
                                 <?=$muzakki['nama']?>
@@ -103,40 +115,17 @@
                             <td class="py-4 text-center">
                                 <?=$muzakki['jml_tanggungan']?>
                             </td>
+                            <td class="py-4 text-center">
+                                <?php
+                                if ($muzakki['status'] == 0){
+                                    echo "<i class='fa-solid fa-x' style='color: red;'></i>";
+                                } else {
+                                    echo "<i class='fa-solid fa-check' style='color: green;'></i>";
+                                }
+                                ?>
+                            </td>
                             <td class="py-4 flex justify-center text-center">
-                                <button id="defaultModalButton" data-modal-toggle="edit<?=$i?>" class="font-medium text-green-600 hover:underline mx-2">Edit</button>
-                                <div id="edit<?=$i?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
-                                    <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-                                        <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                                            <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                    Edit Muzakki
-                                                </h3>
-                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-toggle="edit<?=$i?>">
-                                                    X<span class="sr-only">Close modal</span>
-                                                </button>
-                                            </div>
-                                            <form action="aksi.php?aksi=editmuz" method="post">
-                                                <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                                                    <div>
-                                                        <label for="id">ID :</label>
-                                                        <input type="text" name="id" value="<?=$muzakki['id_muzakki']?>" class="hidden">
-                                                    </div>
-                                                    <div>
-                                                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Muzakki</label>
-                                                        <input type="text" value="<?=$muzakki['nama']?>" name="nama" id="nama" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 " placeholder="Tulis nama.." required>
-                                                    </div>
-                                                    <div>
-                                                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Tanggungan</label>
-                                                        <input type="number" name="jml_tanggungan" value="<?=$muzakki['jml_tanggungan']?>" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5" placeholder="Masukkan jumlah tanggungan..." required>
-                                                    </div>
-                                                </div>
-                                                <button type="submit" name="edit" class="text-black text-center border border-black rounded-lg p-2">Edit</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button id="defaultModalButton" data-modal-toggle="detail<?=$i?>" class="font-medium text-green-600 hover:underline mx-2">Detail</button>
+                            <button id="defaultModalButton" data-modal-toggle="detail<?=$i?>" class="font-medium text-green-600 hover:underline mx-2">Detail</button>
                                 <div id="detail<?=$i?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
                                     <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
                                         <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
@@ -149,6 +138,7 @@
                                                 </button>
                                             </div>
                                             <div>
+                                                <h4>Nomor Kartu Keluarga : <?=$muzakki['no_kk']?></h4>
                                                 <h4>Nama Kepala Keluarga : <?=$muzakki['nama']?></h4>
                                                 <h4>Jumlah Tanggungan : <?=$muzakki['jml_tanggungan']?></h4>
                                                 <p>Perhitungan :</p>
@@ -159,9 +149,41 @@
                                         </div>
                                     </div>
                                 </div>
+                                <button id="defaultModalButton" data-modal-toggle="edit<?=$i?>" class="font-medium text-green-600 hover:underline mx-2">Edit</button>
+                                <div id="edit<?=$i?>" tabindex="-1" aria-hidden="true" class="justify-start text-left hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+                                    <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+                                        <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                                            <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                                    Edit Muzakki
+                                                </h3>
+                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-toggle="edit<?=$i?>">
+                                                    X<span class="sr-only">Close modal</span>
+                                                </button>
+                                            </div>
+                                            <form action="aksi.php?aksi=editmuz" method="post">
+                                                <div class="gap-4 mb-4 sm:grid-cols-2">
+                                                    <div>
+                                                        <label for="no_kk">No. KK</label>
+                                                        <input type="text" name="no_kk" value="<?=$muzakki['no_kk']?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Nomor Keluarga..." required style="pointer-events:none;">
+                                                    </div>
+                                                    <div class="mt-5">
+                                                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Muzakki</label>
+                                                        <input type="text" value="<?=$muzakki['nama']?>" name="nama" id="nama" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 " placeholder="Tulis nama.." required>
+                                                    </div>
+                                                    <div class="mt-5">
+                                                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Tanggungan</label>
+                                                        <input type="number" name="jml_tanggungan" value="<?=$muzakki['jml_tanggungan']?>" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5" placeholder="Masukkan jumlah tanggungan..." required>
+                                                    </div>
+                                                </div>
+                                                <button type="submit" name="edit" class="text-black text-center border border-black rounded-lg p-2">Edit</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                                 <form action="aksi.php?aksi=hapusmuz" method="post">
-                                    <input type="text" name="id" value="<?=$muzakki['id_muzakki']?>" class="hidden">
-                                    <button type="submit" name="hapus" class="font-medium text-green-600 hover:underline mx-2">Hapus</button>
+                                    <input type="text" name="no_kk" value="<?=$muzakki['no_kk']?>" class="hidden">
+                                    <button type="submit" name="hapus" class="font-medium hover:underline mx-2" style="color: red;">Hapus</button>
                                 </form>
                             </td>
                         </tr>
@@ -181,3 +203,12 @@
       </script>
 </body>
 </html>
+
+<?php 
+    function search($keyword){
+        global $conn;
+
+        $query = "SELECT * FROM muzakki WHERE nama LIKE '%$keyword%'";
+        return mysqli_query($conn, $query);
+    }
+?>

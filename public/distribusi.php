@@ -6,6 +6,11 @@
   include "limit.php";
   $master = new sql($connection);
 
+  $sqldistribusi = $master->data_distribusi();
+  if(isset($_POST['search'])){
+    $sqldistribusi = search($_POST['keyword']);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +53,7 @@
                                         $sqlmustahik = $master->all_mustahik();
                                         foreach($sqlmustahik as $mustahik) :
                                     ?>
-                                        <option value="<?=$mustahik['nama']?>"><?=$mustahik['nama']?></option>
+                                        <option value="<?=$mustahik['nama']?>"><?=$mustahik['nama']?> (<?=$mustahik['jml_tanggungan']?>)</option>
                                     <?php endforeach;?>
                                     </select>
                                 </div>
@@ -63,8 +68,11 @@
                                                 $pembagian = $total / $fetch_mustahik['SUM(jml_tanggungan)'];
                                         ?>
                                             <label for="jml_tanggungan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Tanggungan</label>
-                                            <input type="number" name="jml_tanggungan" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 " placeholder="Banyak orang yang menerima" required>
-                                            <span>x <?=$pembagian?> Kg (/mustahik)</span>
+                                            <input type="number" name="jml_tanggungan" id="jml_tanggungan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 " placeholder="Banyak orang yang menerima" required>
+                                            <span>x <?=number_format((float)$pembagian, 2, '.', '')?> Kg (/mustahik)</span>
+                                    </div>
+                                    <div>
+                                        <h4>Total didapat : <span class="font-bold" id="calculation"></span></h4>
                                     </div>
                                 </div>
                             <button type="submit" name="tambah" class="text-black text-center border border-black rounded-lg p-2">Tambah</button>
@@ -80,9 +88,9 @@
       <div class="mx-auto p-10 w-5/6">
         <h1 class="font-bold text-4xl underline text-center">Distribusi</h1>
         <div>
-            <form action="">
-                <input type="text" placeholder="Cari..." name="cari" class="my-5 border border-black rounded-lg p-2">
-                <button type="submit" class="border border-black rounded-lg bg-zinc-100 p-2">Cari</button>
+            <form action="" method="post">
+                <input type="text" placeholder="Cari..." name="keyword" class="my-5 border border-black rounded-lg p-2">
+                <button type="submit" name="search" class="border border-black rounded-lg bg-zinc-100 p-2">Cari</button>
             </form>
         </div>
 
@@ -95,7 +103,7 @@
                     <thead class="text-xs border border-black">
                         <tr>
                             <th scope="col" class="py-3 text-center">
-                                ID
+                                ID Terima
                             </th>
                             <th scope="col" class="py-3 text-center">
                                 Nama
@@ -113,7 +121,6 @@
                     </thead>
                     <tbody>
                     <?php $i = 1;
-                    $sqldistribusi = $master->data_distribusi();
                     ?>
                     <?php foreach($sqldistribusi as $distribusi) : ?>
                         <tr>
@@ -127,24 +134,25 @@
                                 <?=$distribusi['kategori']?>
                             </td>
                             <td class="py-4 text-center">
-                                <?=$distribusi['besar']?> kg
+                                <?=number_format((float)$distribusi['besar'], 2, '.', '')?> kg
                             </td>
                             <td class="py-4 flex justify-center text-center">
                                 <button id="defaultModalButton" data-modal-toggle="edit<?=$i?>" class="font-medium text-green-600 hover:underline mx-2">Edit</button>
-                                <div id="edit<?=$i?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
+                                <div id="edit<?=$i?>" tabindex="-1" aria-hidden="true" class="justify-start text-left hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
                                     <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
                                         <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                                             <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                                     Distribusi
                                                 </h3>
-                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-toggle="edit<?=$i?>">
+                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex" data-modal-toggle="edit<?=$i?>">
                                                     X<span class="sr-only">Close modal</span>
                                                 </button>
                                             </div>
                                             <form action="aksi.php?aksi=editdist" method="post">
                                                 <div class="gap-4 mb-4 sm:grid-cols-2">
                                                     <div>
+                                                    <input type="text" name="before" value="<?=$distribusi['nama']?>" class="hidden">
                                                         <input type="text" name="id" value="<?=$distribusi['id_penerimaan']?>" class="hidden">
                                                         <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Mustahik</label>
                                                         <select id="nama2" name="nama2" class="nama2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 " style="width: 100%;">
@@ -153,7 +161,7 @@
                                                             $sqlmustahik = $master->all_mustahik();
                                                             foreach($sqlmustahik as $mustahik) :
                                                         ?>
-                                                            <option value="<?=$mustahik['nama']?>"><?=$mustahik['nama']?></option>
+                                                            <option value="<?=$mustahik['nama']?>"><?=$mustahik['nama']?> (<?=$mustahik['jml_tanggungan']?>)</option>
                                                         <?php endforeach;?>
                                                         </select>
                                                     </div>
@@ -167,9 +175,12 @@
                                                                 $total = $fetch_beras['SUM(besar_bayar)'] + $konversi;
                                                                 $pembagian = $total / $fetch_mustahik['SUM(jml_tanggungan)'];
                                                         ?>
-                                                            <label for="jml_tanggungan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Tanggungan</label>
-                                                            <input type="number" value="<?=$distribusi['jml_tanggungan']?>" name="jml_tanggungan" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 " placeholder="Banyak orang yang menerima" required>
-                                                            <span>x <?=$pembagian?> Kg (/mustahik)</span>
+                                                            <label for="jml_tanggungan2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Tanggungan</label>
+                                                            <input type="number" name="jml_tanggungan2" value="<?=$distribusi['jml_tanggungan'];?>" id="jml_tanggungan2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 " placeholder="Banyak tanggungan" required>
+                                                            <span>x <?=number_format((float)$pembagian, 2, '.', '')?> Kg (/mustahik)</span>
+                                                    </div>
+                                                    <div>
+                                                        <h4>Total didapat : <span class="font-bold" id="calculation2"></span></h4>
                                                     </div>
                                                 </div>
                                                 <button type="submit" name="edit" class="text-black text-center border border-black rounded-lg p-2">Edit</button>
@@ -214,6 +225,41 @@
         $(".nama2").select2({
         width: 'resolve'
         });
+
+        function calculate_cost() {
+        let count = parseInt(document.getElementById('jml_tanggungan').value);
+        if (count > 0) {
+            size = <?=number_format((float)$pembagian, 2, '.', '')?>;
+            cost = count * size;
+            document.getElementById('calculation').innerHTML = cost+' kg';
+            }
+        }
+
+        document.getElementById('jml_tanggungan').onchange = function() { 
+        calculate_cost(); 
+        }
+
+        function calculate_cost2() {
+        let count = parseInt(document.getElementById('jml_tanggungan2').value);
+        if (count > 0) {
+            size = <?=number_format((float)$pembagian, 2, '.', '')?>;
+            cost = count * size;
+            document.getElementById('calculation2').innerHTML = cost+' kg';
+            }
+        }
+
+        document.getElementById('jml_tanggungan2').onchange = function() { 
+        calculate_cost2(); 
+        }
       </script>
 </body>
 </html>
+
+<?php 
+    function search($keyword){
+        global $conn;
+
+        $query = "SELECT * FROM distribusi WHERE nama LIKE '%$keyword%'";
+        return mysqli_query($conn, $query);
+    }
+?>

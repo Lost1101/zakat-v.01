@@ -70,12 +70,12 @@
                   $total = $fetch_beras['SUM(besar_bayar)'] + $konversi;
                 ?>
                 <p style="font-size: 12px; ">Rp.<?=$fetch_uang['SUM(besar_bayar)']?> / Rp.37.500 = <?=$konversi?> kg</p>
-                <p style="font-size: 12px;">Total keseluruhan beras = <?=$fetch_beras['SUM(besar_bayar)']?> + <?=$konversi?> = <?=$total?> kg</p>
+                <p style="font-size: 12px;">Total keseluruhan beras = <?=$fetch_beras['SUM(besar_bayar)']?> + <?=$konversi?> = <?=number_format((float)$total, 2, '.', '')?> kg</p>
                 <br>
                 <?php
                     $pembagian = $total / $fetch_mustahik['SUM(jml_tanggungan)'];
                 ?>
-                <p style="font-size: 12px;">1 Mustahik masing-masing mendapatkan = <?=$pembagian?> kg</p>
+                <p style="font-size: 12px;">1 Mustahik masing-masing mendapatkan = <?=number_format((float)$pembagian, 2, '.', '')?> kg</p>
             </div>
             <div style="text-align: right; margin-right: 70px;">
                 <p style="font-weight: 700; font-size: 16px;"><?=$today?></p>

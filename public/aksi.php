@@ -130,7 +130,7 @@ include "functions.php";
                     }
                   }
                 
-                if($_GET['aksi']=="editmuz"){
+                if($_GET['aksi']=="editmus"){
                 
                 
                         if(editmus($_POST) > 0 ){
