@@ -13,4 +13,4 @@ di bagian bayar zakat
 4. Perhitungan dengan uang disesuaikan, untuk code yang sekarang dikalikan dengan harga dari informasi yang saya
 dapatkan
 
-ENJOY!! Credit : "Kamilah Insani (217006082)"
+ENJOY!! Credit : "Lost1101"
