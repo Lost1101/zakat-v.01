@@ -1,4 +1,9 @@
-GUIDE APLIKASI ZAKAT FITRAH "MYZAKAT"
+FITUR APLIKASI :
+- INPUT DATA (CRUD)
+- AUTOMATISASI OPERASI BILANGAN
+- CETAK BUKTI PEMBAYARAN
+
+GUIDE APLIKASI ZAKAT FITRAH "MYZAKAT" UNTUK USER
 1. Untuk menjadi amil, harap informasikan juga kepada admin agar dibuatkan akun (insert langsung pada db)
 2. Kegiatan pendistribusian zakat harus saat semua muzakki telah membayar zakat, dikarenakan automatisasi
 perhitungan untuk pembagian secara merata kepada semua mustahik, juga untuk menghindari nilai sisa beras 
