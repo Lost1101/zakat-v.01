@@ -188,10 +188,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <form action="aksi.php?aksi=hapusmus" method="post">
-                                    <input type="text" name="no_kk" value="<?=$mustahik['no_kk']?>" class="hidden">
+                                <a href="aksi.php?aksi=hapusmus&amp;id=<?=$mustahik['no_kk']?>" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini?');">
                                     <button type="submit" name="hapus" class="font-medium hover:underline mx-2" style="color: red;">Hapus</button>
-                                </form>
+                                </a>
                             </td>
                         </tr>
                     <?php $i++ ?>

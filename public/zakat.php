@@ -45,7 +45,7 @@
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
                                     <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Muzakki</label>
-                                    <select id="nama" name="nama" class="nama bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 " style="width: 100%;">
+                                    <select name="nama" class="js-example-basic-single bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 " style="width: 100%;">
                                     <option selected="" value="">-Pilih Nama-</option>
                                     <?php
                                         $sqlmuzakki = $master->all_muzakki();
@@ -57,15 +57,15 @@
                                 </div>
                                 <div>
                                     <label for="besar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Tanggungan</label>
-                                    <input type="number" name="jml_tanggungan" id="jml_tanggungan" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5">
+                                    <input type="number" name="jml_tanggungan" value="" class="jml_tanggungan bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5">
                                 </div>
                                 <div>
                                     <div class="flex items-center mb-4">
-                                        <input id="uang" type="radio" value="uang" name="jenis" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600">
+                                        <input type="radio" value="uang" name="jenis" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600">
                                         <label for="default-radio-1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Uang</label>
                                     </div>
                                     <div class="flex items-center">
-                                        <input checked id="beras" type="radio" value="beras" name="jenis" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500">
+                                        <input checked type="radio" value="beras" name="jenis" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500">
                                         <label for="default-radio-2" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Beras</label> 
                                     </div>
                                 </div>
@@ -87,7 +87,7 @@
         <h1 class="font-bold text-4xl underline text-center">Input Zakat</h1>
         <div>
             <form action="" method="post">
-                <input type="text" placeholder="Cari..." name="keyword" class="my-5 border border-black rounded-lg p-2">
+                <input type="text" placeholder="Cari nama..." name="keyword" class="my-5 border border-black rounded-lg p-2">
                 <button type="submit" name="search" class="border border-black rounded-lg bg-zinc-100 p-2">Cari</button>
             </form>
         </div>
@@ -166,8 +166,8 @@
                                                     <input type="text" name="before" value="<?=$zakat['nama_kk']?>" class="hidden">
                                                     <input type="text" name="id" value="<?=$zakat['id_zakat']?>" class="hidden">
                                                         <div>
-                                                            <label for="nama2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Muzakki</label>
-                                                            <select id="nama2" name="nama2" class="nama bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 " style="width: 100%;">
+                                                            <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kepala Keluarga Muzakki</label>
+                                                            <select name="nama" class="js-example-basic-single bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 " style="width: 100%;">
                                                                 <option selected="<?=$zakat['nama_kk']?>" value="<?=$zakat['nama_kk']?>"><?=$zakat['nama_kk']?></option>
                                                                 <?php
                                                                     $sqlmuzakki = $master->all_muzakki();
@@ -179,7 +179,7 @@
                                                         </div>
                                                         <div>
                                                             <label for="besar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Tanggungan</label>
-                                                            <input type="number" name="jml_tanggungan2" value="<?=$zakat['jml_tanggungan'];?>" id="jml_tanggungan2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5" placeholder="Besar yang dibayar..." required>
+                                                            <input type="number" name="jml_tanggungan" value="<?=$zakat['jml_tanggungan'];?>" class="jml_tanggungan bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5" placeholder="Besar yang dibayar..." required>
                                                         </div>
                                                         <div>
                                                             <div class="flex items-center mb-4">
@@ -187,7 +187,7 @@
                                                                     echo "checked";
                                                                 }else{
                                                                     echo "";
-                                                                }?> id="uang" type="radio" value="uang" name="jenis2" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600">
+                                                                }?> type="radio" value="uang" name="jenis" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600">
                                                                 <label for="default-radio-1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Uang</label>
                                                             </div>
                                                             <div class="flex items-center">
@@ -195,12 +195,9 @@
                                                                     echo "checked";
                                                                 }else{
                                                                     echo "";
-                                                                }?> id="beras" type="radio" value="beras" name="jenis2" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500">
+                                                                }?> type="radio" value="beras" name="jenis" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500">
                                                                 <label for="default-radio-2" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Beras</label> 
                                                             </div>
-                                                        </div>
-                                                        <div>
-                                                            <h4>Total dibayar : <span class="font-bold" id="calculation2"></span></h4>
                                                         </div>
                                                     </div>
                                                     <button type="submit" name="edit" class="text-black text-center border border-black rounded-lg p-2">Edit</button>
@@ -208,10 +205,9 @@
                                             </div>
                                         </div>
                                 </div>
-                                <form action="aksi.php?aksi=hapuszakat" method="post">
-                                    <input type="text" name="id" value="<?=$zakat['id_zakat']?>" class="hidden">
-                                    <button type="submit" name="hapus" class="font-medium text-green-600 hover:underline mx-2">Hapus</button>
-                                </form>
+                                <a href="aksi.php?aksi=hapuszakat&amp;id=<?=$zakat['id_zakat']?>" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini?');">
+                                    <button type="submit" name="hapus" class="font-medium hover:underline mx-2" style="color: red;">Hapus</button>
+                                </a>
                                 <button class="font-medium text-green-600 hover:underline mx-2"><a href="./cetakzakat.php?nama=<?=$zakat['nama_kk']?>&amp;besar=<?=$zakat['besar_bayar']?>&amp;beras=<?=$zakat['beras']?>&amp;uang=<?=$zakat['uang']?>">Cetak</a></button>
                             </td>
                         </tr>
@@ -228,23 +224,12 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
       <script type="text/javascript">
         $(document).ready(function() {
-            $('#nama').select2();
+            $('.js-example-basic-single').select2();
         });
         
-        $(".nama").select2({
-        width: 'resolve'
-        });
-
-        $(document).ready(function() {
-            $('#nama2').select2();
-        });
-        
-        $(".nama2").select2({
-        width: 'resolve'
-        });
 
         function calculate_cost() {
-        let count = parseInt(document.getElementById('jml_tanggungan').value);
+        let count = parseInt(document.getElementsByClassName('jml_tanggungan')[0].value);
         if (count > 0) {
             let size = 0;
             let cost = 0;
@@ -269,38 +254,8 @@
         calculate_cost(); 
     }
     }
-    document.getElementById('jml_tanggungan2').onchange = function() { 
+    document.getElementsByClassName('jml_tanggungan')[0].onchange = function() { 
         calculate_cost(); 
-    }
-
-    function calculate_cost2() {
-        let count = parseInt(document.getElementById('jml_tanggungan2').value);
-        if (count > 0) {
-            let size = 0;
-            let cost = 0;
-            for (var i = 0 ; i < document.getElementsByName('jenis2').length; i++) {
-                if (document.getElementsByName('jenis2')[i].checked) {
-                        size = 37500;
-                        cost = count * size;
-                        document.getElementById('calculation2').innerHTML = 'Rp. '+cost;
-                        break;
-                }else if(document.getElementsByName('jenis2')[i+1].checked){
-                    size = 2.5;
-                    cost = count * size;
-                    document.getElementById('calculation2').innerHTML = cost+' Kg';
-                    break;
-                }
-            }
-        }
-    }
-
-    for (var i = 0 ; i < document.getElementsByName('jenis2').length; i++) {
-    document.getElementsByName('jenis2')[i].onclick = function() { 
-        calculate_cost2(); 
-    }
-    }
-    document.getElementById('jml_tanggungan2').onchange = function() { 
-        calculate_cost2(); 
     }
         </script>
 </body>

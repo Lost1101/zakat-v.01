@@ -71,7 +71,7 @@
         <h1 class="font-bold text-4xl underline text-center">Master Data Muzakki</h1>
         <div>
             <form action="" method="post">
-                <input type="text" placeholder="Cari..." name="keyword" class="my-5 border border-black rounded-lg p-2">
+                <input type="text" placeholder="Cari nama..." name="keyword" class="my-5 border border-black rounded-lg p-2">
                 <button type="submit" name="search" class="border border-black rounded-lg bg-zinc-100 p-2">Cari</button>
             </form>
         </div>
@@ -181,10 +181,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <form action="aksi.php?aksi=hapusmuz" method="post">
-                                    <input type="text" name="no_kk" value="<?=$muzakki['no_kk']?>" class="hidden">
+                                <a href="aksi.php?aksi=hapusmuz&amp;id=<?=$muzakki['no_kk']?>" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini?');">
                                     <button type="submit" name="hapus" class="font-medium hover:underline mx-2" style="color: red;">Hapus</button>
-                                </form>
+                                </a>
                             </td>
                         </tr>
                     <?php $i++ ?>

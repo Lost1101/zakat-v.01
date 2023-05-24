@@ -39,7 +39,8 @@ include "functions.php";
             }
     
         if($_GET['aksi']=="hapuszakat"){
-            if(hapuszak($_POST) > 0 ){
+            $id_hps_zak = $_GET['id'];
+            if(hapuszak($id_hps_zak) > 0 ){
                 echo "
                     <script>
                         alert('Data berhasil dihapus!');
@@ -93,7 +94,8 @@ include "functions.php";
                 }
             
                 if($_GET['aksi']=="hapusmuz"){
-                    if(hapusmuz($_POST) > 0 ){
+                    $id_hps_muz = $_GET['id'];
+                    if(hapusmuz($id_hps_muz) > 0 ){
                         echo "
                             <script>
                                 alert('Data berhasil dihapus!');
@@ -152,8 +154,8 @@ include "functions.php";
                 
                     if($_GET['aksi']=="hapusmus"){
                 
-                
-                        if(hapusmus($_POST) > 0 ){
+                        $id_hps_mus = $_GET['id'];
+                        if(hapusmus($id_hps_mus) > 0 ){
                             echo "
                                 <script>
                                     alert('Data berhasil dihapus!');
@@ -207,7 +209,8 @@ include "functions.php";
                             }
                     
                         if($_GET['aksi']=="hapusdist"){
-                            if(hapusdis($_POST) > 0 ){
+                            $id_hps_dist = $_GET['id'];
+                            if(hapusdis($id_hps_dist) > 0 ){
                                 echo "
                                     <script>
                                         alert('Data berhasil dihapus!');

@@ -24,8 +24,7 @@
 
     function hapusmus($idmus){
         global $conn;
-        $no_kk = htmlspecialchars($idmus['no_kk']);
-        mysqli_query($conn, "DELETE FROM mustahik WHERE no_kk = $no_kk");
+        mysqli_query($conn, "DELETE FROM mustahik WHERE no_kk = $idmus");
         return mysqli_affected_rows($conn);
     }
 
@@ -55,8 +54,7 @@
 
     function hapusmuz($idmuz){
         global $conn;
-        $no_kk = htmlspecialchars($idmuz['no_kk']);
-        mysqli_query($conn, "DELETE FROM muzakki WHERE no_kk = $no_kk");
+        mysqli_query($conn, "DELETE FROM muzakki WHERE no_kk = $idmuz");
         return mysqli_affected_rows($conn);
     }
 
@@ -88,16 +86,16 @@
         mysqli_query($conn, "UPDATE muzakki SET status = '0' WHERE nama = '$before' AND no_kk = '$no_kk_before'");
 
         $id = htmlspecialchars($datzak['id']);
-        $nama = htmlspecialchars($datzak['nama2']);
-        $tanggungan = htmlspecialchars($datzak['jml_tanggungan2']);
+        $nama = htmlspecialchars($datzak['nama']);
+        $tanggungan = htmlspecialchars($datzak['jml_tanggungan']);
         $sqlmuz = mysqli_query($conn, "SELECT * FROM muzakki WHERE nama = '$nama'");
         $muzakki    =mysqli_fetch_array($sqlmuz);
         $no_kk = $muzakki['no_kk'];
-        if($datzak['jenis2'] == 'beras'){
+        if($datzak['jenis'] == 'beras'){
             $besar = $tanggungan * 2.5;
             mysqli_query($conn, "UPDATE bayarzakat SET nama_kk= '$nama', jml_tanggungan= '$tanggungan', besar_bayar = '$besar', beras = '1', uang = '0', no_kk = '$no_kk' ,waktu = NOW() WHERE id_zakat = '$id'");
             mysqli_query($conn, "UPDATE muzakki SET status = '1' WHERE no_kk = '$no_kk'");
-        }elseif($datzak['jenis2'] == 'uang'){
+        }elseif($datzak['jenis'] == 'uang'){
             $besar = $tanggungan * 37500;
             mysqli_query($conn, "UPDATE bayarzakat SET nama_kk= '$nama', jml_tanggungan= '$tanggungan', besar_bayar = '$besar', beras = '0', uang = '1', no_kk = '$no_kk' ,waktu = NOW() WHERE id_zakat = '$id'");
             mysqli_query($conn, "UPDATE muzakki SET status = '1' WHERE no_kk = '$no_kk'");
@@ -108,7 +106,7 @@
 
     function hapuszak($idzak){
         global $conn;
-        $id = htmlspecialchars($idzak['id']);
+        $id = htmlspecialchars($idzak);
         $sqlmuz = mysqli_query($conn, "SELECT * FROM bayarzakat WHERE id_zakat = '$id'");
         $muzakki    =mysqli_fetch_array($sqlmuz);
         $no_kk = $muzakki['no_kk'];
@@ -178,7 +176,7 @@
 
     function hapusdis($iddis){
         global $conn;
-        $id = htmlspecialchars($iddis['id']);
+        $id = htmlspecialchars($iddis);
         $sqlmus = mysqli_query($conn, "SELECT * FROM distribusi WHERE id_penerimaan = '$id'");
         $mustahik    =mysqli_fetch_array($sqlmus);
         $no_kk = $mustahik['no_kk'];

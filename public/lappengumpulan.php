@@ -39,13 +39,15 @@
 <div class="container_content" id="container_content" >
     <div style="width: 720px; height: 1050px; padding: 10px;">
         <div style="margin: 0 auto;">
-            <div style="display: flex; padding: 2px; margin: 0 auto; text-align: center;">
+            <div style="display: flex;  justify-content:space-between; padding: 2px; margin: 0 auto; text-align: center;">
+            <img src="./img/logo.png" alt="" style="width: 200px; height: 100px;">
                 <div style="margin: 0 auto;">
                     <h3 style="font-weight: 700; font-size: 16px;">TIM MYZAKAT</h3>
-                    <p style="font-size: 12px;">Jl.Fuschia No.11, Elvendia Capital, Kekaisaran Elvendia</p>
-                    <p style="font-size: 12px;">Masjid Agung Al-Kanabawi</p>
+                    <p style="font-size: 12px;">Jl.Fuschia No.11, Tasikmalaya, Indonesia</p>
+                    <p style="font-size: 12px;">Masjid Agung Al-Iklas</p>
                     <p style="font-size: 12px;">1 Syawal 1444H/2023 M</p>
                 </div>
+                <img src="./img/baznas.png" alt="" style="margin:3px; width: 120px; height: 120px;">
             </div>
             <hr style="border-bottom: 1px black solid;">
             <div style="padding: 10px;">
@@ -53,7 +55,7 @@
                 <?php
                     $total_orang = $fetch_mustahik['SUM(jml_tanggungan)'] + $fetch_muzakki['SUM(jml_tanggungan)'];
                 ?>
-                <p style="font-size: 13px; text-align: center;">Jumlah zakat fitrah kepanitia Masjid Agung Al-Kanabawi, 1 Syawal 1444H/2023 M sebanyak : <span style="font-weight: 700;"> <?=$total_orang?> Jiwa</span></p>
+                <p style="font-size: 13px; text-align: center;">Jumlah zakat fitrah kepanitia Masjid Agung Al-Iklas, 1 Syawal 1444H/2023 M sebanyak : <span style="font-weight: 700;"> <?=$total_orang?> Jiwa</span></p>
                 <h4 style="font-weight: 700; font-size: 14px; text-decoration: underline;">Muzakki dan Mustahik</h4>
                 <p style="font-size: 12px;">KK Muzakki : <?=$master->all_muzakki()->num_rows?></p>
                 <p style="font-size: 12px;">KK Mustahik : <?=$master->all_mustahik()->num_rows?></p>
@@ -85,11 +87,25 @@
             <h1></h1>
         </div>
     </div>
+
+    <div style="width: 720px; height: 1050px; padding: 20px;">
+            <div style="margin: 0 auto;">
+            <h1 style="font-weight: 700; font-size: 16px; text-align:center; text-decoration: underline;">DATA KK MUZAKKI BAYAR ZAKAT</h1>
+            <?php $i = 1;
+            $sqlbayar = $master->all_bayar();
+            ?>
+            <?php foreach($sqlbayar as $bayar) : ?>
+                <div style="display: flex;">
+                    <p style="font-size: 12px;"><span><?=$i?>.</span> <?=$bayar['nama_kk']?></p>
+                </div>
+            <?php $i++ ?>
+            <?php endforeach; ?>
+            </div>
+    </div>
 </div>
 
 <script>
     generatePDF();
 </script>
-<!--<meta http-equiv="refresh" content="0.2;url=./laporan.php" />-->
 </body>
 </html>

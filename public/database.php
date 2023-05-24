@@ -99,6 +99,12 @@ class sql{
         $query = $db->query($sql);
         return $query;
     }
+    public function all_bayar(){
+        $db = $this->mysqli->conn;
+        $sql = "SELECT * FROM bayarzakat";
+        $query = $db->query($sql);
+        return $query;
+    }
     public function data_muzakki(){
         $nm_db = 'muzakki';
         include "limit.php";

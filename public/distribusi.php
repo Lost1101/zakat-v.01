@@ -89,10 +89,11 @@
         <h1 class="font-bold text-4xl underline text-center">Distribusi</h1>
         <div>
             <form action="" method="post">
-                <input type="text" placeholder="Cari..." name="keyword" class="my-5 border border-black rounded-lg p-2">
+                <input type="text" placeholder="Cari nama..." name="keyword" class="my-5 border border-black rounded-lg p-2">
                 <button type="submit" name="search" class="border border-black rounded-lg bg-zinc-100 p-2">Cari</button>
             </form>
         </div>
+        <p style="color:red">*Alert! Kegiatan distribusi harus saat semua muzakki telah membayar zakat, agar sisa pada dashboard tidak minus!</p>
 
         <?php include "halaman.php"; ?>
 
@@ -179,19 +180,15 @@
                                                             <input type="number" name="jml_tanggungan2" value="<?=$distribusi['jml_tanggungan'];?>" id="jml_tanggungan2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 " placeholder="Banyak tanggungan" required>
                                                             <span>x <?=number_format((float)$pembagian, 2, '.', '')?> Kg (/mustahik)</span>
                                                     </div>
-                                                    <div>
-                                                        <h4>Total didapat : <span class="font-bold" id="calculation2"></span></h4>
-                                                    </div>
                                                 </div>
                                                 <button type="submit" name="edit" class="text-black text-center border border-black rounded-lg p-2">Edit</button>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
-                                <form action="aksi.php?aksi=hapusdist" method="post">
-                                    <input type="text" name="id" value="<?=$distribusi['id_penerimaan']?>" class="hidden">
-                                    <button type="submit" name="hapus" class="font-medium text-green-600 hover:underline mx-2">Hapus</button>
-                                </form>
+                                <a href="aksi.php?aksi=hapusdist&amp;id=<?=$distribusi['id_penerimaan']?>" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini?');">
+                                    <button type="submit" name="hapus" class="font-medium hover:underline mx-2" style="color: red;">Hapus</button>
+                                </a>
                             </td>
                         </tr>
                     <?php $i++ ?>
@@ -237,19 +234,6 @@
 
         document.getElementById('jml_tanggungan').onchange = function() { 
         calculate_cost(); 
-        }
-
-        function calculate_cost2() {
-        let count = parseInt(document.getElementById('jml_tanggungan2').value);
-        if (count > 0) {
-            size = <?=number_format((float)$pembagian, 2, '.', '')?>;
-            cost = count * size;
-            document.getElementById('calculation2').innerHTML = cost+' kg';
-            }
-        }
-
-        document.getElementById('jml_tanggungan2').onchange = function() { 
-        calculate_cost2(); 
         }
       </script>
 </body>

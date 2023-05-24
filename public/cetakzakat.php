@@ -42,8 +42,8 @@
                 <img src="./img/logo.png" alt="" style="width: 200px; height: 100px;">
                 <div>
                     <h3 style="font-weight: 700;">Tim MyZakat</h3>
-                    <p>Jl.Fuschia No.11, Elvendia Capital</p>
-                    <p>Kekaisaran Elvendia</p>
+                    <p>Jl.Fuschia No.11, Tasikmalaya</p>
+                    <p>Indonesia</p>
                 </div>
                 <img src="./img/baznas.png" alt="" style="margin:3px; width: 120px; height: 120px;">
             </div>
@@ -62,9 +62,5 @@
     <script>
         generatePDF();
     </script>
-    <!--<script>
-        generatePDF();
-    </script>
-    <meta http-equiv="refresh" content="0.2;url=./zakat.php" />-->
 </body>
 </html>

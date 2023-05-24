@@ -33,12 +33,14 @@
     <div style="width: 720px; height: 1050px; padding: 10px;">
         <div style="margin: 0 auto;">
             <div style="display: flex; padding: 2px; margin: 0 auto; text-align: center;">
+                <img src="./img/logo.png" alt="" style="width: 200px; height: 100px;">
                 <div style="margin: 0 auto;">
                     <h3 style="font-weight: 700; font-size: 16px;">TIM MYZAKAT</h3>
-                    <p style="font-size: 12px;">Jl.Fuschia No.11, Elvendia Capital, Kekaisaran Elvendia</p>
-                    <p style="font-size: 12px;">Masjid Agung Al-Kanabawi</p>
+                    <p style="font-size: 12px;">Jl.Fuschia No.11, Tasikmalaya, Indonesia</p>
+                    <p style="font-size: 12px;">Masjid Agung Al-Iklas</p>
                     <p style="font-size: 12px;">1 Syawal 1444H/2023 M</p>
                 </div>
+                <img src="./img/baznas.png" alt="" style="margin:3px; width: 120px; height: 120px;">
             </div>
             <hr style="border-bottom: 1px black solid;">
             <div style="padding: 10px;">
@@ -46,7 +48,7 @@
             $fetch_mustahik = $master->all_org_mustahik()->fetch_array();
             ?>
                 <h1 style="font-weight: 700; font-size: 16px; text-align: center; text-decoration: underline;">LAPORAN PENDISTRIBUSIAN ZAKAT FITRAH</h1>
-                <p style="font-size: 12px; text-align: center;">Zakat fitrah Masjid Agung Al-Kanabawi, 1 Syawal 1444H/2023 M dibagikan kepada sebanyak : <span style="font-weight: 700;"> <?=$master->all_mustahik()->num_rows?> Mustahik</span></p>
+                <p style="font-size: 12px; text-align: center;">Zakat fitrah Masjid Agung Al-Iklas, 1 Syawal 1444H/2023 M dibagikan kepada sebanyak : <span style="font-weight: 700;"> <?=$master->all_mustahik()->num_rows?> Mustahik</span></p>
                 <h4 style="font-weight: 700; font-size: 14px; text-decoration: underline;">Detail Mustahik</h4>
                     <p style="font-size: 12px;">Fakir : <?=$master->det_mustahik('Fakir')?> Jiwa</p>
                     <p style="font-size: 12px;">Miskin : <?=$master->det_mustahik('Miskin')?> Jiwa</p>
@@ -108,6 +110,5 @@
 <script>
     generatePDF()
 </script>
-<!--<meta http-equiv="refresh" content="0.2;url=./laporan.php" />-->
 </body>
 </html>
